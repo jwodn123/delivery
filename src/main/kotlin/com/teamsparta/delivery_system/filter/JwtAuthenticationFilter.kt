@@ -1,6 +1,6 @@
 package com.teamsparta.delivery_system.filter
 
-import com.teamsparta.delivery_system.auth.JwtPlugin
+import com.teamsparta.delivery_system.plugin.JwtPlugin
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

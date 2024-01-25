@@ -1,6 +1,6 @@
 package com.teamsparta.delivery_system.config
 
-import com.teamsparta.delivery_system.auth.JwtPlugin
+import com.teamsparta.delivery_system.plugin.JwtPlugin
 import com.teamsparta.delivery_system.filter.JwtAuthenticationFilter
 import com.teamsparta.delivery_system.filter.JwtExceptionFilter
 import org.springframework.context.annotation.Bean

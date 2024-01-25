@@ -1,4 +1,4 @@
-package com.teamsparta.delivery_system.auth
+package com.teamsparta.delivery_system.plugin
 
 import com.teamsparta.delivery_system.web.response.ApiResponseCode
 import io.jsonwebtoken.*

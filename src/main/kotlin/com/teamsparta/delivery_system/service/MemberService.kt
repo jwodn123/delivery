@@ -1,6 +1,6 @@
 package com.teamsparta.delivery_system.service
 
-import com.teamsparta.delivery_system.auth.JwtPlugin
+import com.teamsparta.delivery_system.plugin.JwtPlugin
 import com.teamsparta.delivery_system.domain.entity.Member
 import com.teamsparta.delivery_system.exception.DuplicateException
 import com.teamsparta.delivery_system.repository.MemberRepository
@@ -18,8 +18,11 @@ class MemberService(
 
     fun signUp(request: SignUpRequest): Member {
         val member = Member(
-            userid = request.userid,
+            useremail = request.useremail,
             password = passwordEncoder.encode(request.password),
+            phone = request.phone,
+            nickname = request.nickname,
+            address = request.address,
             role = request.role
         )
         try {
