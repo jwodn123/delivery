@@ -27,8 +27,4 @@ class Review(
 
     @Column(name = "content")
     var content: String = content
-
-    fun getCreatedAt(): LocalDateTime {
-        return this.createdAt
-    }
 }
