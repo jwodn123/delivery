@@ -7,16 +7,19 @@ import com.teamsparta.delivery_system.exception.DuplicateException
 import com.teamsparta.delivery_system.repository.MemberRepository
 import com.teamsparta.delivery_system.web.request.LoginRequest
 import com.teamsparta.delivery_system.web.request.SignUpRequest
+import lombok.RequiredArgsConstructor
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
+@RequiredArgsConstructor
 class MemberService(
     private val memberRepository: MemberRepository,
     private val passwordEncoder: PasswordEncoder,
     private val jwtPlugin: JwtPlugin
 ) {
+    // 회원가입
     fun signUp(request: SignUpRequest): Member {
         val member = Member(
             useremail = request.useremail,
@@ -33,6 +36,7 @@ class MemberService(
         }
     }
 
+    // 로그인
     fun login(request: LoginRequest): String {
         val member = memberRepository.findByUseremail(request.useremail)
             ?: throw BadRequestException("이메일이 일치하지 않습니다.")

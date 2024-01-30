@@ -1,5 +1,6 @@
 package com.teamsparta.delivery_system.plugin
 
+import com.teamsparta.delivery_system.domain.enums.MemberRole
 import com.teamsparta.delivery_system.web.response.ApiResponseCode
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys

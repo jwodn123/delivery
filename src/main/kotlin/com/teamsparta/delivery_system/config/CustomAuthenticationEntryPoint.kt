@@ -24,11 +24,13 @@ class CustomAuthenticationEntryPoint(
     ) {
         val exception = when (response!!.status) {
             200 -> return
-            401, 403 -> request!!.getAttribute("exception") as Exception
+            401, 403 -> request!!.getAttribute("exception") as? Exception
             404 -> NotFoundException("요청하신 리소스를 찾을 수 없습니다.")
             408 -> TimeoutException("요청 시간이 초과되었습니다.")
             else -> ServerException("서버에 문제가 발생했습니다.")
         }
-        resolver.resolveException(request!!, response, null, exception)
+        if (request != null && exception != null) {
+            resolver.resolveException(request, response, null, exception)
+        }
     }
 }

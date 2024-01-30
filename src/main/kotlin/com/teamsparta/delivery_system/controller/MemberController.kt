@@ -9,24 +9,26 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RestController
 class MemberController(
     private val memberService: MemberService
 ) {
+    // 회원가입
     @PostMapping("/signup")
     fun signUp(@RequestBody @Valid request: SignUpRequest): ResponseEntity<SingleResponse<String>> {
         memberService.signUp(request)
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(SingleResponse.success("회원가입 성공"))
+            .body(SingleResponse.success("회원가입에 성공했습니다!"))
     }
 
+    // 로그인
     @PostMapping("/login")
     fun login(@RequestBody @Valid request: LoginRequest): ResponseEntity<SingleResponse<String>> {
         val token = memberService.login(request)
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(SingleResponse.successOf("로그인 성공", token))
+            .body(SingleResponse.successOf("로그인에 성공했습니다!", token))
     }
 }

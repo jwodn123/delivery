@@ -36,7 +36,7 @@ class MemberServiceTest {
         // When
         val result = memberService.signUp(request)
 
-        // Then
+
 
     }
 

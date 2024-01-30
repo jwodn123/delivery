@@ -4,9 +4,6 @@ import jakarta.persistence.*
 
 @Entity
 class Cart(
-    @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
-    @JoinColumn(name = "member_id", nullable = false)
-    val member: Member,
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name = "menu_id", nullable = false)

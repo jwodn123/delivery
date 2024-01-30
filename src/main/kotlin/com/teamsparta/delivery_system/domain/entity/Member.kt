@@ -1,10 +1,18 @@
 package com.teamsparta.delivery_system.domain.entity
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import com.teamsparta.delivery_system.domain.enums.MemberRole
 import jakarta.persistence.*
 
 @Entity
-class Member(useremail: String, password: String, phone: String, nickname: String, address: String, role: MemberRole) {
+class Member(
+    useremail: String,
+    password: String,
+    phone: String,
+    nickname: String,
+    address: String,
+    role: MemberRole
+) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,15 +41,7 @@ class Member(useremail: String, password: String, phone: String, nickname: Strin
     var stores: MutableList<Store> = ArrayList()
 
     @OneToMany(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var carts: MutableList<Cart> = ArrayList()
-
-    @OneToMany(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
     var favorites: MutableList<Favorite> = ArrayList()
 
-    @OneToMany(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var orders: MutableList<Order> = ArrayList()
-
-    @OneToMany(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var reviews: MutableList<Review> = ArrayList()
 
 }

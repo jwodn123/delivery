@@ -27,6 +27,8 @@ class JwtExceptionFilter : OncePerRequestFilter() {
             } else {
                 setResponse(response, ApiResponseCode.INTERNAL_SERVER_ERROR)
             }
+        } catch (e: Exception) {
+            println(e.message)
         }
     }
 
