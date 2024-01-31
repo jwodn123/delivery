@@ -87,6 +87,7 @@ class MenuService(
         }
     }
 
+
     fun findMemberStoreAndMenu(memberId: Long, storeId: Long, menuId: Long): Triple<Member, Store, Menu> {
         val member = memberRepository.findById(memberId).orElseThrow { NotFoundException("사용자를 찾을 수 없습니다.") }
         val store = storeRepository.findById(storeId).orElseThrow { NotFoundException("수정할 가게를 찾을 수 없습니다.") }

@@ -7,11 +7,11 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "orders")
 class Order(
-    @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     val member: Member,
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     val store: Store,
 
@@ -37,6 +37,4 @@ class Order(
     @Enumerated(EnumType.STRING)
     var status: OrderStatus = OrderStatus.WAITING_PAY   // 초기 주문 상태 (결제 대기)
 
-    @OneToMany(mappedBy = "order", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var carts: MutableList<Cart> = ArrayList()
 }
