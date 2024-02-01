@@ -32,11 +32,11 @@ class Menu(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val menuId: Long? = null
 
-//    @OneToMany(mappedBy = "menu", cascade = [CascadeType.ALL], orphanRemoval = true)
-//    var reviews: MutableList<Review> = ArrayList()
-
     @OneToMany(mappedBy = "menu", cascade = [CascadeType.ALL], orphanRemoval = true)
     var carts: MutableList<Cart> = ArrayList()
+
+    @OneToMany(mappedBy = "menu", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var orders: MutableList<Order> = ArrayList()
 
     fun update(category: Category, name: String, explanation: String, price: Long) {
         this.category = category

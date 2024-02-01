@@ -4,4 +4,5 @@ enum class OrderStatus(val value: String) {
     COMPLETE("주문완료"),
     CONFIRMED("주문확정"),
     CANCEL("주문취소"),
+    DE_START("배달시작")
 }

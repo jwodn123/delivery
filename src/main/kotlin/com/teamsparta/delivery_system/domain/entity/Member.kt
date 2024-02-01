@@ -43,5 +43,8 @@ class Member(
     @OneToMany(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
     var favorites: MutableList<Favorite> = ArrayList()
 
+    @OneToMany(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var carts: MutableList<Cart> = ArrayList()
+
 
 }

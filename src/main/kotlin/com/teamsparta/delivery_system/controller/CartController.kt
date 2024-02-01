@@ -23,19 +23,18 @@ class CartController(
 ) {
 
     // 장바구니에 메뉴 담기
-    @PostMapping("/{menuId}")
+    @PostMapping
     fun addCart(
         @AuthenticationPrincipal user: User,
-        @PathVariable menuId: Long,
         @Valid @RequestBody request: CartAddRequest
     ): ResponseEntity<SingleResponse<CartDto>> {
         try {
-            val carts = cartService.addCart(user.username.toLong(), request, menuId)
+            val carts = cartService.addCart(user.username.toLong(), request)
             return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(SingleResponse.successOf("장바구니 추가에 성공했습니다!", CartDto.fromEntity(carts)))
         } catch (e: BadRequestException) {
-            throw BadRequestException("장바구니 추가 실패!!")
+            throw BadRequestException("장바구니에는 같은 가게 메뉴만 담을 수 있습니다.")
         }
 
     }
@@ -47,7 +46,7 @@ class CartController(
         return ResponseEntity(ListResponse.successOf(carts), HttpStatus.OK)
     }
 
-    // 장바구니 메뉴 삭제
+    // 장바구니 특정 메뉴 삭제
     @DeleteMapping("/{cartId}/{menuId}")
     fun deleteCartMenu(
         @AuthenticationPrincipal user: User,

@@ -38,6 +38,7 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
     runtimeOnly("com.h2database:h2")
+    runtimeOnly("mysql:mysql-connector-java")
 
     compileOnly("org.projectlombok:lombok")
 
@@ -54,6 +55,15 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
+
+    implementation("io.rest-assured:rest-assured:4.4.0") {
+        exclude(group = "org.codehaus.groovy", module = "groovy")
+        exclude(group = "org.codehaus.groovy", module = "groovy-xml")
+    }
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
+
+    implementation("mysql:mysql-connector-java:8.0.23")
+
 }
 
 tasks.withType<KotlinCompile> {
