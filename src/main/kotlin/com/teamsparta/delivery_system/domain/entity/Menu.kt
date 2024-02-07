@@ -21,7 +21,7 @@ class Menu(
     var explanation: String,
 
     @Column(name = "price")
-    var price: Long
+    var price: Int
 ) {
 
     init {
@@ -32,13 +32,7 @@ class Menu(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val menuId: Long? = null
 
-    @OneToMany(mappedBy = "menu", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var carts: MutableList<Cart> = ArrayList()
-
-    @OneToMany(mappedBy = "menu", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var orders: MutableList<Order> = ArrayList()
-
-    fun update(category: Category, name: String, explanation: String, price: Long) {
+    fun update(category: Category, name: String, explanation: String, price: Int) {
         this.category = category
         this.name = name
         this.explanation = explanation

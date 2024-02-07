@@ -2,11 +2,13 @@ package com.teamsparta.delivery_system.domain.dto
 
 import com.teamsparta.delivery_system.domain.entity.Order
 import com.teamsparta.delivery_system.domain.enums.OrderStatus
+import com.teamsparta.delivery_system.domain.enums.PaymentMethod
+import java.time.LocalDateTime
 
 data class OrderDto(
     val orderId: Long? = null,
-    var paymentMethod: String,
-    var totalPrice: Long,
+    var paymentMethod: PaymentMethod,
+    var totalPrice: Int,
     var requests: String? = null,
     var status: OrderStatus
 ) {

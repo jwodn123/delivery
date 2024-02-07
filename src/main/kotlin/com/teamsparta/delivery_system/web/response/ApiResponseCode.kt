@@ -13,6 +13,8 @@ enum class ApiResponseCode(status: HttpStatus, message: String) {
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다. 다시 로그인해주세요."),
     UNSUPPORTED_TOKEN(HttpStatus.UNAUTHORIZED, "올바르지 않은 토큰입니다."),
     WRONG_TYPE_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 유효하지 않습니다."),
+
+    PAY_FAILED(HttpStatus.BAD_REQUEST, "결제에 실패했습니다.")
     ;
 
     val status: HttpStatus = status

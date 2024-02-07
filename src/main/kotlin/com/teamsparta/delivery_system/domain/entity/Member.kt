@@ -37,14 +37,5 @@ class Member(
     @Enumerated(EnumType.STRING)
     var role: MemberRole = role
 
-    @OneToMany(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var stores: MutableList<Store> = ArrayList()
-
-    @OneToMany(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var favorites: MutableList<Favorite> = ArrayList()
-
-    @OneToMany(mappedBy = "member", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var carts: MutableList<Cart> = ArrayList()
-
 
 }

@@ -12,7 +12,7 @@ data class MenuDto(
     var category: Category,
     var name: String,
     var explanation: String,
-    var price: Long
+    var price: Int
 
 ) {
 

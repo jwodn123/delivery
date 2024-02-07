@@ -10,18 +10,18 @@ class Cart(
     val member: Member,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id", nullable = false)
-    val menu: Menu,
+    @JoinColumn(name = "store_id", nullable = false)
+    var store: Store,
 
-    @Column(name = "quantity")
-    var quantity: Int
 ) {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val cartId: Long? = null
 
-    fun addQuantity(quantity: Int) {
-        this.quantity += quantity
+    @OneToMany(mappedBy = "cart", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val cartItems: MutableList<CartItem> = mutableListOf()
+
+    fun isSameStore(menu: Menu): Boolean {
+        return this.store.storeId == menu.store.storeId
     }
 }

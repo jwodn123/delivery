@@ -13,7 +13,7 @@ data class MenuCreateRequest (
     @field:NotBlank
     var explanation: String,
 
-    var price: Long,
+    var price: Int,
 
 ) {
 //    fun toServiceDto(): MenuDto {

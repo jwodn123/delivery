@@ -29,14 +29,13 @@ class CartController(
         @Valid @RequestBody request: CartAddRequest
     ): ResponseEntity<SingleResponse<CartDto>> {
         try {
-            val carts = cartService.addCart(user.username.toLong(), request)
+            cartService.addCart(user.username.toLong(), request)
             return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(SingleResponse.successOf("장바구니 추가에 성공했습니다!", CartDto.fromEntity(carts)))
+                .body(SingleResponse.success("장바구니 추가에 성공했습니다!"))
         } catch (e: BadRequestException) {
             throw BadRequestException("장바구니에는 같은 가게 메뉴만 담을 수 있습니다.")
         }
-
     }
 
     // 장바구니 리스트

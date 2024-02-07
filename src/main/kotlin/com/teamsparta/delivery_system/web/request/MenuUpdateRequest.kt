@@ -15,7 +15,7 @@ data class MenuUpdateRequest(
     @field:NotBlank
     var explanation: String,
 
-    var price: Long,
+    var price: Int,
 
 ) {
 
