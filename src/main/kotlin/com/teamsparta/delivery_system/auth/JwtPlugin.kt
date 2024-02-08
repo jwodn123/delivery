@@ -57,7 +57,7 @@ class JwtPlugin(
             throw JwtException(ApiResponseCode.UNSUPPORTED_TOKEN.message)
         } catch (e: Exception) {
             e.printStackTrace()
-            throw JwtException(ApiResponseCode.INTERNAL_SERVER_ERROR.message);
+            throw JwtException(ApiResponseCode.INTERNAL_SERVER_ERROR.message)
         }
     }
 }

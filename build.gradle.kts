@@ -62,7 +62,9 @@ dependencies {
     }
     implementation("javax.xml.bind:jaxb-api:2.3.1")
 
-    implementation("mysql:mysql-connector-java:8.0.23")
+    implementation("mysql:mysql-connector-java:8.0.28")
+
+//    testImplementation("org.testcontainers:testcontainers:1.19.3")
 
 }
 
