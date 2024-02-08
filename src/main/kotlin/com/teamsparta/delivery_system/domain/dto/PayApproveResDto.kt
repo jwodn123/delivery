@@ -1,6 +1,6 @@
 package com.teamsparta.delivery_system.domain.dto
 
-import com.teamsparta.delivery_system.domain.dto.kakao.Amount
+import com.teamsparta.delivery_system.domain.dto.Amount
 
 /**
  * 결제 승인 요청 시 사용

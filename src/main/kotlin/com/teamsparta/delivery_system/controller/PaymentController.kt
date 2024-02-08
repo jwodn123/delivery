@@ -1,14 +1,11 @@
 package com.teamsparta.delivery_system.controller
 
-import com.teamsparta.delivery_system.domain.dto.PayApproveResDto
-import com.teamsparta.delivery_system.domain.dto.kakao.KakaoCancelResponse
+import com.teamsparta.delivery_system.web.response.KakaoCancelResponse
 import com.teamsparta.delivery_system.domain.dto.PayReadyResDto
 import com.teamsparta.delivery_system.exception.PaymentException
 import com.teamsparta.delivery_system.service.PaymentService
-import com.teamsparta.delivery_system.web.request.PayCompleteRequest
 import com.teamsparta.delivery_system.web.request.PayReadyRequest
 import com.teamsparta.delivery_system.web.response.SingleResponse
-import jakarta.servlet.http.HttpSession
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal

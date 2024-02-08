@@ -1,5 +1,6 @@
-package com.teamsparta.delivery_system.domain.dto.kakao
+package com.teamsparta.delivery_system.web.response
 
+import com.teamsparta.delivery_system.domain.dto.Amount
 import com.teamsparta.delivery_system.domain.enums.OrderStatus
 
 /**

@@ -41,9 +41,9 @@ dependencies {
     runtimeOnly("mysql:mysql-connector-java")
 
     compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-    annotationProcessor("org.projectlombok:lombok")
 
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:mysql:1.19.3")  // MySQL 컨테이너 사용
@@ -64,7 +64,15 @@ dependencies {
 
     implementation("mysql:mysql-connector-java:8.0.28")
 
-//    testImplementation("org.testcontainers:testcontainers:1.19.3")
+    // RabbitMQ
+    implementation("org.springframework.boot:spring-boot-starter-amqp")
+    testImplementation("org.springframework.amqp:spring-rabbit-test")
+
+    // Spring Batch
+    implementation("org.springframework.boot:spring-boot-starter-batch:3.0.6")
+
+
+
 
 }
 

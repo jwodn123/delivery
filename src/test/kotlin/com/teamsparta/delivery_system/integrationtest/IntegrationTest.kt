@@ -16,7 +16,9 @@ abstract class IntegrationTest {
     companion object {
 
         @JvmStatic //static
-        var container: MySQLContainer<*> = MySQLContainer("mysql:8.0.33"); //테스트에서 사용할 MySQL 컨테이너를 선언, 이 컨테이너는 테스트 실행 전에 시작되고 테스트 종료 후에 중지
+        //테스트에서 사용할 MySQL 컨테이너를 선언, 이 컨테이너는 테스트 실행 전에 시작되고 테스트 종료 후에 중지
+        //Docker 켰는지 꼭 확인!!
+        var container: MySQLContainer<*> = MySQLContainer("mysql:8.0.33");
 
         @JvmStatic
         @BeforeAll //JUnit5에서 모든 테스트 메서드 실행 전에 실행될 메서드를 지정, 여기서는 테스트 실행 전에 MySQL 컨테이너를 시작하기 위해 사용

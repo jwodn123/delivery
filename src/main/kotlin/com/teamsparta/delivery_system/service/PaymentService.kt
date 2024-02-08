@@ -1,17 +1,15 @@
 package com.teamsparta.delivery_system.service
 
 import com.teamsparta.delivery_system.domain.dto.PayApproveResDto
-import com.teamsparta.delivery_system.domain.dto.kakao.KakaoCancelResponse
+import com.teamsparta.delivery_system.web.response.KakaoCancelResponse
 import com.teamsparta.delivery_system.domain.dto.PayReadyResDto
 import com.teamsparta.delivery_system.domain.enums.OrderStatus
 import com.teamsparta.delivery_system.exception.BadRequestException
 import com.teamsparta.delivery_system.exception.NotFoundException
-import com.teamsparta.delivery_system.repository.CartItemRepository
 import com.teamsparta.delivery_system.repository.MemberRepository
 import com.teamsparta.delivery_system.repository.OrderRepository
 import com.teamsparta.delivery_system.web.request.PayCompleteRequest
 import com.teamsparta.delivery_system.web.request.PayReadyRequest
-import jakarta.servlet.http.HttpSession
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.*
 import org.springframework.util.LinkedMultiValueMap
@@ -19,7 +17,6 @@ import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import kotlin.concurrent.thread
 
 @Service
 @Transactional

@@ -1,6 +1,7 @@
 package com.teamsparta.delivery_system.domain.dto
 
 import com.teamsparta.delivery_system.domain.entity.Cart
+import com.teamsparta.delivery_system.domain.dto.CartDto
 import com.teamsparta.delivery_system.domain.entity.CartItem
 import com.teamsparta.delivery_system.domain.entity.Menu
 

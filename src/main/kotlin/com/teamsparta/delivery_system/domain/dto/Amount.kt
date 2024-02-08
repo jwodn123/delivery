@@ -1,4 +1,4 @@
-package com.teamsparta.delivery_system.domain.dto.kakao
+package com.teamsparta.delivery_system.domain.dto
 
 /**
  * 결제 금액 정보
