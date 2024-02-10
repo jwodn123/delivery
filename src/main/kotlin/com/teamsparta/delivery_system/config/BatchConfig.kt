@@ -57,7 +57,7 @@ class BatchConfig(
 
     @Bean
     @StepScope
-    fun processor(@Value("#{jobParameters[requestDate]}") requestDate: String?): ItemProcessor<Member, String> {
+    fun processor(@Value("#{jobParameters[requestDate]}") requestDate: String?): ItemProcessor <Member, String> {
         println("==> processor: $requestDate")
         return ItemProcessor<Member, String> { item: Member ->
             item.useremail
