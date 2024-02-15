@@ -47,4 +47,5 @@ class MemberService(
 
         return jwtPlugin.generateToken("${member.memberId}:${member.role}")
     }
+
 }

@@ -49,6 +49,10 @@ class Order(
             // 주문 상태를 "배달시작" 으로 변경
             this.status = OrderStatus.DE_START
             return
+        } else if(this.status == OrderStatus.DE_START) {
+            // 주문 상태를 "배달완료" 로 변경
+            this.status = OrderStatus.DE_FINISH
+            return
         }
 
         // 주문 상태를 "주문확정" 으로 변경

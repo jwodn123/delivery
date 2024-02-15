@@ -71,6 +71,9 @@ dependencies {
     // Spring Batch
     implementation("org.springframework.boot:spring-boot-starter-batch:3.0.6")
 
+    // coolSMS
+    implementation ("net.nurigo:sdk:4.3.0")
+
 
 
 

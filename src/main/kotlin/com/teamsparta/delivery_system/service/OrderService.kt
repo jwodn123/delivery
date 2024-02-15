@@ -1,5 +1,6 @@
 package com.teamsparta.delivery_system.service
 
+import com.teamsparta.delivery_system.domain.dto.MessageDto
 import com.teamsparta.delivery_system.domain.dto.OrderDto
 import com.teamsparta.delivery_system.domain.entity.Order
 import com.teamsparta.delivery_system.domain.enums.MemberRole
@@ -20,7 +21,8 @@ class OrderService(
     private val orderRepository: OrderRepository,
     private val cartRepository: CartRepository,
     private val memberRepository: MemberRepository,
-    private val storeRepository: StoreRepository
+    private val storeRepository: StoreRepository,
+    private val messageService: MessageService
 ) {
 
     /**
@@ -92,8 +94,22 @@ class OrderService(
      */
     @Transactional
     fun confirmOrder(memberId: Long, storeId: Long, orderId: Long) {
+        val store = storeRepository.findById(storeId).orElseThrow { NotFoundException("주문 정보가 없습니다.") }
+        val owner = memberRepository.findById(memberId).orElseThrow { NotFoundException("주문 정보가 없습니다.") }
+        if (store.member != owner) {
+            throw NotFoundException("매장 사장님 정보와 일치하지 않습니다.")
+        }
         val order = orderRepository.findById(orderId).orElseThrow { NotFoundException("주문 정보가 없습니다.") }
         order.confirm(storeId)
+
+        // 주문 상태 변경에 대한 메시지를 RabbitMQ로 발행
+        val messageDto = MessageDto(
+            memberId = order.member.memberId!!,
+            name = order.member.nickname,
+            phoneNumber = order.member.phone,
+            status = order.status
+        )
+        messageService.sendMessage(messageDto)
     }
 
     /**
@@ -106,6 +122,5 @@ class OrderService(
 
         return OrderDto.ownerOrderList(orders)
     }
-
 
 }

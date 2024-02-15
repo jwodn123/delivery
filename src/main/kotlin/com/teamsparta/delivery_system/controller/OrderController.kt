@@ -1,5 +1,6 @@
 package com.teamsparta.delivery_system.controller
 
+import com.teamsparta.delivery_system.domain.dto.MessageDto
 import com.teamsparta.delivery_system.domain.dto.OrderDto
 import com.teamsparta.delivery_system.domain.dto.PayApproveResDto
 import com.teamsparta.delivery_system.domain.dto.StoreDto
@@ -13,6 +14,7 @@ import com.teamsparta.delivery_system.web.response.SingleResponse
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.core.userdetails.User
 import org.springframework.web.bind.annotation.*
@@ -21,7 +23,6 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class OrderController(
     private val orderService: OrderService,
-    private val cartService: CartService
 ) {
 
     /**
@@ -69,6 +70,7 @@ class OrderController(
 
     /**
      * 결제 성공 후
+     * 결제 대기 -> 결제 완료
      */
     @PostMapping("/{orderId}/complete")
     fun afterPayRequest(
@@ -82,9 +84,13 @@ class OrderController(
     }
 
     /**
-     * 매장 사장님 주문 상태 변경
+     * 매장 사장님 주문 상태 변경(배달 시작, 배달 완료 같은 경우 원래는 라이더가 직접 변경하는 것이지만 이 프로젝트에서는 매장 사장님이 하는 것으로 변경)
+     * 1 - 결제 완료 -> 주문 확정
+     * 2 - 주문 확정 -> 배달 시작
+     * 3 - 배달 시작 -> 배달 완료
      */
     @PostMapping("/{orderId}/stores/{storeId}/confirm")
+    //@PreAuthorize("hasRole('OWNER')")
     fun confirmOrder(
         @AuthenticationPrincipal user: User,
         @PathVariable orderId: Long,
@@ -107,4 +113,5 @@ class OrderController(
         val orders = orderService.ownerOrderLists(user.username.toLong(), storeId)
         return ResponseEntity(ListResponse.successOf(orders), HttpStatus.OK)
     }
+
 }
