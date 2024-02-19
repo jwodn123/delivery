@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
     <!-- Configure the Console appender -->
-<!--    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">-->
-<!--        <encoder>-->
-<!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
-<!--        </encoder>-->
-<!--    </appender>-->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
 
     <!-- Configure the Sentry appender, overriding the logging threshold to the WARN level -->
     <appender name="Sentry" class="io.sentry.logback.SentryAppender">
@@ -24,6 +24,7 @@
     of a non-Sentry logger that is set to a different logging threshold -->
     <springProfile name="local">
         <root level="DEBUG">
+            <appender-ref ref="Console"/>
             <appender-ref ref="STDOUT"/>
             <appender-ref ref="DAILY_ROLLING"/>
         </root>

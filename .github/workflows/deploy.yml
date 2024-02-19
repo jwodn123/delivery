@@ -23,6 +23,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    # gradlew에 대한 실행 권한 부여
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
     # 2. Spring Boot 애플리케이션 빌드
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
@@ -45,41 +49,32 @@ jobs:
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
 
     ######## EC2 DEPLOY #########
-    # 6. 최신 이미지를 풀받습니다
-    - name: docker pull
-      run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }} # EC2 인스턴스 퍼블릭 DNS
+        username: ec2-user
+        key: ${{ secrets.PRIVATE_KEY }} # pem 키
+        # 도커 작업
+        script: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/github-actions-demo
+          docker stop $(docker ps -a -q)
+          docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/github-actions-demo
+          docker rm $(docker ps --filter 'status=exited' -a -q)
+          docker image prune -a -f
 
-    # 기존의 컨테이너를 중지시킵니다
-    - name: docker stop container
-      run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
-
-    # 최신 이미지를 컨테이너화하여 실행시킵니다
-    - name: docker run new container
-      run: sudo docker run --name github-actions-demo --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-
-    # 미사용 이미지를 정리합니다
-    - name: delete old docker image
-      run: sudo docker system prune -f
-
-#  # 위 과정에서 푸시한 이미지를 ec2에서 풀받아서 실행시키는 과정
-#  run-docker-image-on-ec2:
-#    # build (위)과정이 완료되어야 실행됩니다.
-#    needs: build-docker-image
-#    runs-on: self-hosted
+#    # 기존의 컨테이너를 중지시킵니다
+#    - name: docker stop container
+#      run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
 #
-#    steps:
-#      # 최신 이미지를 풀받습니다
-#      - name: docker pull
-#        run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+#      # 6. 이미지 삭제
+#    - name: docker rm
+#      run: sudo docker image rm -f ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
 #
-#      # 기존의 컨테이너를 중지시킵니다
-#      - name: docker stop container
-#        run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
+#      # 6. 최신 이미지를 풀받습니다
+#    - name: docker pull
+#      run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
 #
-#      # 최신 이미지를 컨테이너화하여 실행시킵니다
-#      - name: docker run new container
-#        run: sudo docker run --name github-actions-demo --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-#
-#      # 미사용 이미지를 정리합니다
-#      - name: delete old docker image
-#        run: sudo docker system prune -f
+#    # 최신 이미지를 컨테이너화하여 실행시킵니다
+#    - name: docker run new container
+#      run: sudo docker run --name github-actions-demo --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo

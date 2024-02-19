@@ -20,6 +20,9 @@ configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
+    runtimeOnly {
+        exclude(group = "commons-logging", module = "commons-logging")
+    }
 }
 
 repositories {
@@ -57,10 +60,6 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
 
-    implementation("io.rest-assured:rest-assured:4.4.0") {
-        exclude(group = "org.codehaus.groovy", module = "groovy")
-        exclude(group = "org.codehaus.groovy", module = "groovy-xml")
-    }
     implementation("javax.xml.bind:jaxb-api:2.3.1")
 
     implementation("mysql:mysql-connector-java:8.0.28")

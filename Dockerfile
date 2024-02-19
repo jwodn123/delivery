@@ -1,10 +1,10 @@
 # Dockerfile
 
 # jdk17 Image Start
-FROM openjdk:17
+FROM openjdk:17-jdk
 
 # 인자 설정 - JAR_File
-ARG JAR_FILE=build/libs/*.jar
+ARG JAR_FILE=build/libs/delivery_system-0.0.1-SNAPSHOT.jar
 
 # jar 파일 복제
 COPY ${JAR_FILE} app.jar

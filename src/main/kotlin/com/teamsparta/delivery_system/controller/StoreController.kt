@@ -27,6 +27,8 @@ class StoreController(
         @Valid @RequestBody request: StoreCreateRequest
     ): ResponseEntity<SingleResponse<StoreDto>> {
         try {
+
+
             val store = storeservice.createStore(user.username.toLong(), request)
             return ResponseEntity
                 .status(HttpStatus.OK)
