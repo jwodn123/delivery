@@ -2,31 +2,42 @@ package com.teamsparta.delivery_system.messaging.consumer
 
 import com.teamsparta.delivery_system.domain.dto.MessageDto
 import com.teamsparta.delivery_system.domain.enums.OrderStatus
+import com.teamsparta.delivery_system.exception.BadRequestException
 import com.teamsparta.delivery_system.exception.NotFoundException
 import com.teamsparta.delivery_system.repository.MemberRepository
 import com.teamsparta.delivery_system.util.SmsUtil
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.stereotype.Service
+import io.sentry.Sentry
 
 @Service
 class OrderStatusEventConsumer(
     private val smsUtil: SmsUtil,
-    private val memberRepository: MemberRepository
+    private val memberRepository: MemberRepository,
 ) {
 
     private val logger = LoggerFactory.getLogger(OrderStatusEventConsumer::class.java)
 
-    @RabbitListener(queues = ["\${rabbitmq.queue.name}"])
+    @RabbitListener(queues = ["\${rabbitmq.queue.name.orderStatus}"])
     fun receiveOrderStatusMessage(messageDto: MessageDto) {
-        logger.info("Received order status message: {}", messageDto.toString())
-        sendMessageToCustomer(messageDto)
+        try {
+            logger.info("주문 상태 메시지 수신됨: {}", messageDto.toString())
+            throw BadRequestException("메시지 수신 실패!!")
+            sendMessageToCustomer(messageDto)
+        } catch (e: Exception) {
+            Sentry.setTag("RabbitMQ", "ConsumeFail")
+            Sentry.captureException(e);
+            // consume 계속 실패 -> Sentry 로 Log 전송 -> Sentry 로 에러 로그 전송 -> 특정 Log가 (몇번 이상?) 발생하면 Slack 으로 알림 전송
+        }
     }
+
 
     /**
      * 주문 상태에 따라 메시지를 전송
      */
-    private fun sendMessageToCustomer(messageDto: MessageDto) {
+    fun sendMessageToCustomer(messageDto: MessageDto) {
+        logger.info("Message Consumed !")
         val member = memberRepository.findById(messageDto.memberId).orElseThrow { NotFoundException("사용자를 찾을 수 없습니다.") }
 
         val statusMessage = when (messageDto.status) {
@@ -40,6 +51,7 @@ class OrderStatusEventConsumer(
         }
 
         // SMS API 호출
-        smsUtil.sendOne(member.phone, statusMessage)
+        // smsUtil.sendOne(member.phone, statusMessage)
+        logger.info("문자 발송 {}: {}", member.phone, statusMessage)
     }
 }

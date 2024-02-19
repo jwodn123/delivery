@@ -1,8 +1,11 @@
-insert into member(userid, password, phone, nickname, address, role)
-values("ow@naver.com", "12341234", "010-6789-5678", "owner", "서울시 강남구", "OWNER");
+insert into member(member_id, userid, password, phone, nickname, address, role)
+values(4, "ow@naver.com", "12341234", "01023456789", "owner", "서울시 강남구", "OWNER");
 
 insert into member(userid, password, phone, nickname, address, role)
-values("jeon@naver.com", "1234000", "010-1234-2345", "jw", "서울시 구로구", "CUSTOMER");
+values("jeon@naver.com", "1234000", "01012342345", "jw", "서울시 구로구", "CUSTOMER");
+
+insert into member(userid, password, phone, nickname, address, role)
+values("roskvkf@naver.com", "1234000", "01037286657", "jjw", "서울시 구로구", "CUSTOMER");
 
 insert into store(name, address, content, phone, min_delivery_price, delivery_tip, min_delivery_time, max_delivery_time, member_id)
 values("BBQ 강남역점", "서울시 강남구", "bbq 강남역점입니다.", "021231234", 20000, 2000, 10, 30, 1);

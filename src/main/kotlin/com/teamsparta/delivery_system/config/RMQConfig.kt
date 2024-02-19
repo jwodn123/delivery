@@ -4,6 +4,7 @@ import org.springframework.amqp.core.Binding
 import org.springframework.amqp.core.BindingBuilder
 import org.springframework.amqp.core.DirectExchange
 import org.springframework.amqp.core.Queue
+import org.springframework.amqp.core.QueueBuilder
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate
@@ -30,32 +31,33 @@ class RMQConfig(
     @Value("\${spring.rabbitmq.password}")
     private val password: String,
 
-    @Value("\${rabbitmq.queue.name}")
-    private val orderStQueue: String,
+    /**
+     * Exchange
+     */
+    @Value("\${rabbitmq.exchange.name.orderStatus}")
+    private val ORDER_EXCHANGE: String,
 
-//    @Value("\${rabbitmq.queue.name.payment}")
-//    private val paymentQueueName: String,
-//
-//    @Value("\${rabbitmq.queue.name.confirmation}")
-//    private val confirmationQueueName: String,
-//
-//    @Value("\${rabbitmq.queue.name.deliveryStart}")
-//    private val deliveryStartQueueName: String,
+    @Value("\${rabbitmq.exchange.name.error}")
+    private val ERROR_EXCHANGE: String,
 
-    @Value("\${rabbitmq.exchange.name}")
-    private val exchangeName: String,
+    /**
+     * Queue
+     */
+    @Value("\${rabbitmq.queue.name.orderStatus}")
+    private val ORDER_STATUS_QUEUE: String,
 
-    @Value("\${rabbitmq.routing.key}")
-    private val orderStKey: String,
+    @Value("\${rabbitmq.queue.name.error}")
+    private val ERROR_QUEUE: String,
 
-//    @Value("\${rabbitmq.routing.key.payment}")
-//    private val paymentRoutingKey: String,
-//
-//    @Value("\${rabbitmq.routing.key.confirmation}")
-//    private val confirmationRoutingKey: String,
-//
-//    @Value("\${rabbitmq.routing.key.deliveryStart}")
-//    private val deliveryStartRoutingKey: String
+    /**
+     * Routing Key
+     */
+    @Value("\${rabbitmq.routing.key.orderStatus}")
+    private val ORDER_KEY: String,
+
+    @Value("\${rabbitmq.routing.key.error}")
+    private val ERROR_KEY: String,
+
 ) {
 
 
@@ -67,67 +69,46 @@ class RMQConfig(
      */
     @Bean
     fun orderStatusQueue(): Queue {
-        return Queue(orderStQueue)
+        return QueueBuilder.durable(ORDER_STATUS_QUEUE)
+            .withArgument("x-dead-letter-exchange", ERROR_EXCHANGE)
+            .withArgument("x-dead-letter-routing-key", ERROR_KEY)
+            .build()
     }
-//    @Bean
-//    fun paymentQueue(): Queue {
-//        return Queue(paymentQueueName)
-//    }
-//
-//    @Bean
-//    fun confirmationQueue(): Queue {
-//        return Queue(confirmationQueueName)
-//    }
-//
-//    @Bean
-//    fun deliveryStartQueue(): Queue {
-//        return Queue(deliveryStartQueueName)
-//    }
 
-    /**
-     * 각 Queue에 Binding 설정
-     * 1 - paymentBinding
-     * 2 - confirmationBinding
-     * 3 - deliveryStartBinding
-     */
-//    @Bean
-//    fun paymentBinding(paymentQueue: Queue, exchange: DirectExchange): Binding {
-//        return BindingBuilder.bind(paymentQueue).to(exchange).with(paymentRoutingKey)
-//    }
-//
-//    @Bean
-//    fun confirmationBinding(confirmationQueue: Queue, exchange: DirectExchange): Binding {
-//        return BindingBuilder.bind(confirmationQueue).to(exchange).with(confirmationRoutingKey)
-//    }
-//
-//    @Bean
-//    fun deliveryStartBinding(deliveryStartQueue: Queue, exchange: DirectExchange): Binding {
-//        return BindingBuilder.bind(deliveryStartQueue).to(exchange).with(deliveryStartRoutingKey)
-//    }
+    @Bean
+    fun errorQueue(): Queue {
+        return QueueBuilder.durable(ERROR_QUEUE).build()
+    }
 
     /**
      * Queue에 Binding 설정
      */
     @Bean
-    fun orderStatusBinding(orderStQueue: Queue, exchange: DirectExchange): Binding {
-        return BindingBuilder.bind(orderStQueue).to(exchange).with(orderStKey)
+    fun orderStatusBinding(orderStatusQueue: Queue, orderExchange: DirectExchange): Binding {
+        return BindingBuilder.bind(orderStatusQueue).to(orderExchange).with(ORDER_KEY)
+    }
+
+    @Bean
+    fun errorBinding(errorQueue: Queue, errorExchange: DirectExchange): Binding {
+        return BindingBuilder.bind(errorQueue).to(errorExchange).with(ERROR_KEY)
     }
 
 
     /**
      * 지정된 익스체인지 이름으로 DirectExchange 빈을 생성
-     *
-     * @return TopicExchange 빈 객체
      */
     @Bean
-    fun exchange(): DirectExchange {
-        return DirectExchange(exchangeName)
+    fun orderExchange(): DirectExchange {
+        return DirectExchange(ORDER_EXCHANGE)
+    }
+
+    @Bean
+    fun errorExchange(): DirectExchange {
+        return DirectExchange(ERROR_EXCHANGE)
     }
 
     /**
      * RabbitMQ 연결을 위한 ConnectionFactory 빈을 생성하여 반환
-     *
-     * @return ConnectionFactory 객체
      */
     @Bean
     fun connectionFactory(): ConnectionFactory {

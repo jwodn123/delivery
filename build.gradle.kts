@@ -3,10 +3,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "3.2.2"
     id("io.spring.dependency-management") version "1.1.4"
+    id("io.sentry.jvm.gradle") version "4.3.0"
     kotlin("jvm") version "1.9.22"
     kotlin("plugin.spring") version "1.9.22"
     kotlin("plugin.jpa") version "1.9.20"
 }
+
 
 group = "com.teamsparta"
 version = "0.0.1-SNAPSHOT"
@@ -69,15 +71,16 @@ dependencies {
     testImplementation("org.springframework.amqp:spring-rabbit-test")
 
     // Spring Batch
-    implementation("org.springframework.boot:spring-boot-starter-batch:3.0.6")
+    //implementation("org.springframework.boot:spring-boot-starter-batch:3.0.6")
 
     // coolSMS
     implementation ("net.nurigo:sdk:4.3.0")
 
-
-
+    // Sentry
+    implementation("io.sentry:sentry-spring-boot-starter:4.3.0")
 
 }
+
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {

@@ -3,6 +3,7 @@ package com.teamsparta.delivery_system.domain.entity
 import com.teamsparta.delivery_system.domain.entity.common.BaseTimeEntity
 import com.teamsparta.delivery_system.domain.enums.OrderStatus
 import com.teamsparta.delivery_system.domain.enums.PaymentMethod
+import com.teamsparta.delivery_system.exception.BadRequestException
 import com.teamsparta.delivery_system.exception.NotFoundException
 import jakarta.persistence.*
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
@@ -45,6 +46,10 @@ class Order(
     fun confirm(storeId: Long) {
         if (this.store.storeId != storeId) {
             throw NotFoundException("해당 매장의 주문이 아닙니다.")
+        } else if(this.status == OrderStatus.COMPLETE_PAY) {
+            // 주문 상태를 "주문확정" 으로 변경
+            this.status = OrderStatus.CONFIRMED
+            return
         } else if(this.status == OrderStatus.CONFIRMED) {
             // 주문 상태를 "배달시작" 으로 변경
             this.status = OrderStatus.DE_START
@@ -54,9 +59,7 @@ class Order(
             this.status = OrderStatus.DE_FINISH
             return
         }
-
-        // 주문 상태를 "주문확정" 으로 변경
-        this.status = OrderStatus.CONFIRMED
+        throw BadRequestException("이미 배달이 완료 되었습니다!")
     }
 
 }
