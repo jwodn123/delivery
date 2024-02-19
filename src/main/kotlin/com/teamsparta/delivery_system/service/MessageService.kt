@@ -28,7 +28,7 @@ class MessageService(
      * @param messageDto 발행할 메시지의 DTO 객체
      */
     fun sendMessage(messageDto: MessageDto) {
-        logger.info("Message sent: {}", messageDto.toString())
+        logger.info("Message sent : {}", messageDto.toString())
 
         // 각각의 상태에 따라 라우팅 키 지정하여 RabbitMQ로 메시지 발행
         if (!messageDto.status.isSendable()) {
