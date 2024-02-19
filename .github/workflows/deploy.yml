@@ -29,41 +29,46 @@ jobs:
 
     # 2. Spring Boot 애플리케이션 빌드
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: clean bootJar
+      run: ./gradlew build -x test
 
-    # 3. Docker 이미지 빌드
-    - name: docker image build
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
+    - name: Docker build
+      run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker build -t app .
+        docker tag app ${{ secrets.DOCKER_USERNAME }}/last-test:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/last-test:latest
 
-    # 4. DockerHub 로그인
-    - name: docker login
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-    # 5. Docker Hub 이미지 푸시
-    - name: docker Hub push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-
-    ######## EC2 DEPLOY #########
     - name: Deploy
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.HOST }} # EC2 인스턴스 퍼블릭 DNS
+        host: ${{ secrets.AWS_SSH_HOST }} # EC2 인스턴스 퍼블릭 DNS
         username: ec2-user
-        key: ${{ secrets.PRIVATE_KEY }} # pem 키
+        key: ${{ secrets.AWS_SSH_KEY }} # pem 키
         # 도커 작업
         script: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/github-actions-demo
+          docker pull ${{ secrets.DOCKER_USERNAME }}/last-test:latest
           docker stop $(docker ps -a -q)
-          docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/github-actions-demo
+          docker run -d --log-driver=syslog -p 8080:8080 -e SPRING_PROFILES_ACTIVE=prod ${{ secrets.DOCKER_USERNAME }}/last-test:latest
           docker rm $(docker ps --filter 'status=exited' -a -q)
-          docker image prune -a -f
+          docker image prune -a -f  
 
-#    # 기존의 컨테이너를 중지시킵니다
+#    # 3. Docker 이미지 빌드
+#    - name: docker image build
+#      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
+#
+#    # 4. DockerHub 로그인
+#    - name: docker login
+#      uses: docker/login-action@v2
+#      with:
+#        username: ${{ secrets.DOCKERHUB_USERNAME }}
+#        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+#
+#    # 5. Docker Hub 이미지 푸시
+#    - name: docker Hub push
+#      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+
+    ######## EC2 DEPLOY #########
+#      # 기존의 컨테이너를 중지시킵니다
 #    - name: docker stop container
 #      run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
 #
