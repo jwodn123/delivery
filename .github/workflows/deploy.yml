@@ -49,16 +49,16 @@ jobs:
     ####### EC2 DEPLOY #########
       # 기존의 컨테이너를 중지시킵니다
     - name: docker stop container
-      run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
+      run: docker stop $(docker ps -q) 2>/dev/null || true
 
       # 6. 이미지 삭제
     - name: docker rm
-      run: sudo docker image rm -f ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+      run: docker image rm -f ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
 
       # 6. 최신 이미지를 풀받습니다
     - name: docker pull
-      run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+      run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
 
     # 최신 이미지를 컨테이너화하여 실행시킵니다
     - name: docker run new container
-      run: sudo docker run --name github-actions-demo --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+      run: docker run --name github-actions-demo --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo

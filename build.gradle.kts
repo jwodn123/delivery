@@ -20,13 +20,14 @@ configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
-    runtimeOnly {
-        exclude(group = "commons-logging", module = "commons-logging")
-    }
 }
 
 repositories {
     mavenCentral()
+}
+
+configurations.configureEach {
+    exclude(group = "commons-logging", module = "commons-logging")
 }
 
 dependencies {
