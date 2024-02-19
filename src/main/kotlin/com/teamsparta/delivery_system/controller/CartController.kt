@@ -22,7 +22,7 @@ class CartController(
     private val cartService: CartService
 ) {
 
-    // 장바구니에 메뉴 담기
+    // 장바구니에 메뉴 담기 
     @PostMapping
     fun addCart(
         @AuthenticationPrincipal user: User,
