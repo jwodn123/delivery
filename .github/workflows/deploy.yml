@@ -66,5 +66,5 @@ jobs:
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo:latest
             docker stop $(docker ps -a -q)
             docker rm $(docker ps --filter 'status=exited' -a -q)
-            docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo:latest
+            docker run -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo:latest
 
