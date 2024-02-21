@@ -42,6 +42,21 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Set Yaml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./src/main/resources/application.yml
+        env:
+          spring.datasource.url: ${{ secrets.DB_URL }}
+          spring.datasource.password: ${{ secrets.DB_PWD }}
+          spring.rabbitmq.host: ${{ secrets.RABBITMQ_HOST }}
+          jwt.secret-key: ${{ secrets.JWT_KEY }}
+          ADMIN_KEY: ${ secrets.KAKAO_KEY }
+          coolsms.api.key: ${ secrets.COOLSMS_KEY }
+          coolsms.api.secret: ${ secrets.COOLSMS_SECRET }
+          Sentry.dsn: ${ secrets.SENTRY_DSN }
+
+
       # Gradle build
       - name: Build with Gradle
         run: ./gradlew build -x test
