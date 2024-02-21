@@ -51,8 +51,8 @@ jobs:
         run: |
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
           docker build -t app .
-          docker tag app ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo:latest   
+          docker tag app ${{ secrets.DOCKERHUB_USERNAME }}/delivery:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/delivery:latest   
 
       # Start Deploy
       - name: Deploy
@@ -63,8 +63,8 @@ jobs:
           key: ${{ secrets.AWS_SSH_KEY }} # pem 키
           # 도커 작업
           script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo:latest
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/delivery:latest
             docker stop $(docker ps -a -q)
             docker rm $(docker ps --filter 'status=exited' -a -q)
-            docker run -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo:latest
+            docker run -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/delivery:latest
 
