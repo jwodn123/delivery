@@ -1,0 +1,78 @@
+spring:
+  batch:
+    initialize-schema: always # never로 해주면 애플리케이션이 매번 실행 할때마다 메타 정보 테이블을 생성하지 않도록 해줌.
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${ secrets.DB_URL }
+    username: root
+    password: ${ secrets.DB_PWD }
+  profiles:
+    active: local
+    include:
+      - test
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        show-sql: false
+        format_sql: false
+
+  logging:
+    level:
+      org.hibernate.SQL: debug
+
+  # RabbitMQ 연결 정보
+  rabbitmq:
+    host: ${ secrets.RABBITMQ_HOST }
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        acknowledge-mode: auto # manual X auto O
+        retry:
+          enabled: true # 재시도
+          initial-interval: 5s # 최초 메시지 처리 실패 후 재시도까지의 딜레이
+          max-interval: 12s # 최대 재시도 인터벌
+          max-attempts: 2 # 최대 재시도 횟수
+          multiplier: 2 # 이전 interval * multiplier = 다음 interval
+
+# RabbitMQ queue, exchange, routing-key 정보
+rabbitmq:
+  queue:
+    name:
+      orderStatus: orderStQueue
+      error: errorQueue
+  exchange:
+    name:
+      orderStatus: orderStatus.exchange
+      error: error.exchange
+  routing:
+    key:
+      orderStatus: orderStKey
+      error: errorKey
+
+# JWT
+jwt:
+  secret-key: ${ secrets.JWT_KEY }
+  expiration-hours: 3
+  issuer: JW17
+
+# KakaoPay
+CID: TC0ONETIME
+ADMIN_KEY: ${ secrets.KAKAO_KEY }
+
+# coolSMS
+coolsms:
+  api:
+    key: ${ secrets.COOLSMS_KEY }
+    secret: ${ secrets.COOLSMS_SECRET }
+
+# Sentry
+Sentry:
+  dsn: ${ secrets.SENTRY_DSN } # DSN설정
+  enable-tracing: true # 에러 추척 설정
+  #environment: development # 각각의 환경도 설정할 수 있다.
