@@ -40,7 +40,7 @@ spring:
           max-attempts: 2 # 최대 재시도 횟수
           multiplier: 2 # 이전 interval * multiplier = 다음 interval
 
-# RabbitMQ queue, exchange, routing-key 정보
+# RabbitMQ queue, exchange, routing-key  정보
 rabbitmq:
   queue:
     name:
