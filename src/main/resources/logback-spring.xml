@@ -1,47 +1,32 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!-- Configure the Console appender -->
-    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <!--<pattern>app> %d{HH:mm:ss}|%-20t|%-5p|%logger|%C{10}|%M|%L|==> |%m!%n</pattern>-->
+            <!-- 로그수준|발생시간|쓰레드이름|클래스명|메소드명|라인| ==> 로그내용|줄바꿈-->
+            <pattern>%-5p %d{HH:mm:ss} [%t] %c{3}, %M at line %L; %m%n</pattern>
         </encoder>
     </appender>
 
     <!-- Configure the Sentry appender, overriding the logging threshold to the WARN level -->
-    <appender name="Sentry" class="io.sentry.logback.SentryAppender">
+    <appender name="sentry" class="io.sentry.logback.SentryAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ERROR</level>
+            <level>WARN</level>
         </filter>
-        <!-- Optionally add an encoder -->
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
     </appender>
 
-    <appender-ref ref="Sentry" />
+    <logger name="org.apache.commons" level="info"/>
+    <logger name="org.springframework" level="info" />
+    <logger name="org.apache.http.client.protocol" level="error"/>
+    <logger name="com.jainwon.jobda" level="debug"/>
+    <logger name="org.apache.http" level="info"/>
 
-    <!-- Enable the Console and Sentry appenders, Console is provided as an example
-    of a non-Sentry logger that is set to a different logging threshold -->
-    <springProfile name="local">
-        <root level="DEBUG">
-            <appender-ref ref="Console"/>
-            <appender-ref ref="STDOUT"/>
-            <appender-ref ref="DAILY_ROLLING"/>
-        </root>
-    </springProfile>
+    <logger name="org.hibernate" level="info"/>
+    <logger name="org.hibernate.SQL" level="debug"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace"/>
 
-    <springProfile name="dev, stg">
-        <root level="DEBUG">
-            <appender-ref ref="STDOUT"/>
-            <appender-ref ref="DAILY_ROLLING"/>
-        </root>
-    </springProfile>
-
-    <springProfile name="prod">
-        <root level="DEBUG">
-            <appender-ref ref="STDOUT"/>
-            <appender-ref ref="DAILY_ROLLING"/>
-            <appender-ref ref="Sentry" />
-        </root>
-    </springProfile>
+    <root level="debug">
+        <appender-ref ref="console"/>
+        <appender-ref ref="sentry"/>
+    </root>
 </configuration>

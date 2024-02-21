@@ -1,5 +1,7 @@
 # Dockerfile
 
+# RUN gradle clean bootJar
+
 # jdk17 Image Start
 FROM openjdk:17-alpine
 

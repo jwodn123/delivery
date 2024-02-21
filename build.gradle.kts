@@ -28,6 +28,7 @@ repositories {
 
 configurations.configureEach {
     exclude(group = "commons-logging", module = "commons-logging")
+    exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
 }
 
 dependencies {
@@ -35,6 +36,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-log4j2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
@@ -77,6 +79,7 @@ dependencies {
 
     // Sentry
     implementation("io.sentry:sentry-spring-boot-starter:4.3.0")
+    //implementation("io.sentry:sentry-logback:1.7.30")
 
 }
 
