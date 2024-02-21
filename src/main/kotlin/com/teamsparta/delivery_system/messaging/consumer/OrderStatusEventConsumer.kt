@@ -23,7 +23,7 @@ class OrderStatusEventConsumer(
     fun receiveOrderStatusMessage(messageDto: MessageDto) {
         try {
             logger.info("주문 상태 메시지 수신됨: {}", messageDto.toString())
-            throw BadRequestException("지속적인 Consume Error 가 발생하고 있습니다.")
+            //throw BadRequestException("지속적인 Consume Error 가 발생하고 있습니다.")
             sendMessageToCustomer(messageDto)
         } catch (e: Exception) {
             Sentry.setTag("RabbitMQ", "ConsumeFail")
