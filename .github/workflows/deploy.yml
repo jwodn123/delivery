@@ -51,10 +51,10 @@ jobs:
           spring.datasource.password: ${{ secrets.DB_PWD }}
           spring.rabbitmq.host: ${{ secrets.RABBITMQ_HOST }}
           jwt.secret-key: ${{ secrets.JWT_KEY }}
-          ADMIN_KEY: ${ secrets.KAKAO_KEY }
-          coolsms.api.key: ${ secrets.COOLSMS_KEY }
-          coolsms.api.secret: ${ secrets.COOLSMS_SECRET }
-          Sentry.dsn: ${ secrets.SENTRY_DSN }
+          ADMIN_KEY: ${{ secrets.KAKAO_KEY }}
+          coolsms.api.key: ${{ secrets.COOLSMS_KEY }}
+          coolsms.api.secret: ${{ secrets.COOLSMS_SECRET }}
+          Sentry.dsn: ${{ secrets.SENTRY_DSN }}
 
 
       # Gradle build
