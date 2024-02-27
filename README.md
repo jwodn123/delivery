@@ -18,8 +18,9 @@
 </aside>
 
 
-# Architecture
+# Architecture
 ### CI / CD
 <img width="731" alt="스크린샷 2024-02-22 오전 10 57 50" src="https://github.com/jwodn123/delivery/assets/68779402/3ed93060-9f63-4552-a3db-0d7a46e0389d">
+
 ### RabbitMQ + Sentry
 <img width="501" alt="스크린샷 2024-02-21 오후 11 32 41" src="https://github.com/jwodn123/delivery/assets/68779402/213cb439-7190-40bf-93ff-8016fe9f7567">
