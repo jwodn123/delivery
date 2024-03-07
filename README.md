@@ -19,7 +19,7 @@
 - RabbitMQ의 Queue에서 메시지가 제대로 consume 되지 않는 문제가 많이 발생할 경우 Slack 으로 Error에 대한 알림을 보내주는 모니터링 시스템 구축.
 </aside>
 
-
+</br></br>
 
 ## ⚒️ [ Architecture ]
 ### CI / CD
